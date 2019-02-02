@@ -15,7 +15,7 @@
     "email": "nannetti.enrico.92@gmail.com",
     "url": "http://enriconannetti.com"
   },
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "build": "gulp"
   },
