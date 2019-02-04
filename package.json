@@ -1,6 +1,6 @@
 {
   "name": "animated-svg-dial",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A fully customizable progress dial created using SVG",
   "main": "/src/animated-svg-dial.js",
   "repository": "nano9222/animated-svg-dial",

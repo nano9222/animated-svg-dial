@@ -29,6 +29,7 @@ class AnimatedSVGDial {
     this.initAnimationParams();
   }
 
+  // Animate all the dials
   animate() {
     for (let i = 0; i < this.params.length; i++) {
       const progressBar = this.params[i];
@@ -36,43 +37,52 @@ class AnimatedSVGDial {
     }
   }
 
+  // Resets all the dials
   reset() {
     for (let i = 0; i < this.params.length; i++) {
       this.resetDialParams(i);
     }
   }
 
+  // Sets the dial's animation params
   initAnimationParams() {
     for (let i = 0; i < this.params.length; i++) {
       const progressBar = this.params[i];
-      this.setDialParams(i, progressBar);
+      this.setDialAnimationParams(i, progressBar);
     }
   }
 
+  // Sets the timout for the animation
+  // index: dial index - int
+  // progressBar: parameter object - object
   animateSvgRadialProgressBar(index, progressBar) {
-    if (progressBar.value === undefined || Number.isNaN(progressBar.value)) { return; }
+    if (progressBar.value === undefined || Number.isNaN(progressBar.value)) {
+      return;
+    }
 
-    if (progressBar.maxValue !== undefined && Number.isNaN(progressBar.maxValue)) { return; }
+    if (progressBar.maxValue !== undefined && Number.isNaN(progressBar.maxValue)) {
+      return;
+    }
 
     if (
-      progressBar.animationDuration !== undefined
-      && Number.isNaN(progressBar.animationDuration)
-    ) { return; }
+      progressBar.animationDuration !== undefined &&
+      Number.isNaN(progressBar.animationDuration)
+    ) {
+      return;
+    }
 
     if (
-      progressBar.animationOffset !== undefined
-      && Number.isNaN(progressBar.animationOffset)) { return; }
+      progressBar.animationOffset !== undefined &&
+      Number.isNaN(progressBar.animationOffset)) {
+      return;
+    }
 
     const gauge = this.svgElement.querySelectorAll('.circle')[index];
-
-
     const radius = gauge.getAttribute('r');
-
-
     const circumference = 2 * radius * Math.PI;
-
-
-    const { maxValue } = progressBar;
+    const {
+      maxValue
+    } = progressBar;
 
     const textElement = this.svgElement.querySelector('text');
     const offset = (circumference / maxValue) * (maxValue - progressBar.value);
@@ -85,11 +95,16 @@ class AnimatedSVGDial {
     }, progressBar.animationOffset);
   }
 
-  setDialParams(index, progressBar) {
+  // Sets the dial's animation params
+  // index: dial index - int
+  // progressBar: parameter object - object
+  setDialAnimationParams(index, progressBar) {
     if (
-      progressBar.animationDuration !== undefined
-      && Number.isNaN(progressBar.animationDuration)
-    ) { return; }
+      progressBar.animationDuration !== undefined &&
+      Number.isNaN(progressBar.animationDuration)
+    ) {
+      return;
+    }
 
     const gauge = this.svgElement.querySelectorAll('.circle')[index];
 
@@ -110,6 +125,8 @@ class AnimatedSVGDial {
     gauge.setAttribute('style', `transition: stroke-dashoffset ${transitionParams};`);
   }
 
+  // Resets the dial to its initial state
+  // index: dial index - int
   resetDialParams(index) {
     const gauge = this.svgElement.querySelectorAll('.circle')[index];
     if (gauge !== undefined && gauge !== null) {
@@ -117,18 +134,22 @@ class AnimatedSVGDial {
     }
     if (!this.hideText) {
       const text = this.svgElement.querySelector('text');
-      if (text !== undefined && text !== null) { text.textContent = ''; }
+      if (text !== undefined && text !== null) {
+        text.textContent = '';
+      }
     }
   }
 
+  // Calls the methods to create the HTML structure
   initHtml() {
-    this.setSVGDefs(this.params);
-    this.setGraphicElements(this.params);
+    this.createSVGDefs(this.params);
+    this.createGraphicElements(this.params);
   }
 
-  // Adds to the SVG tag the element of the dial and the text
+  // Adds to the SVG tag the element of the dial and the text and it attaches
+  // them to the right HTML node
   // params: array of attributes for each dial and for the text - array
-  setGraphicElements(params) {
+  createGraphicElements(params) {
     for (let i = 0; i < params.length; i++) {
       const progressBar = params[i];
       // Background circle
@@ -145,7 +166,7 @@ class AnimatedSVGDial {
 
   // Adds to the SVG tag the correct style definitions
   // params: array of gradients for each dial - array
-  setSVGDefs(params) {
+  createSVGDefs(params) {
     for (let i = 0; i < params.length; i++) {
       const progressBar = params[i];
       // If there is no everything is managed by circle params
@@ -202,6 +223,9 @@ class AnimatedSVGDial {
 
       defaultProgressBar.value = progressBar.value || 50;
       defaultProgressBar.maxValue = progressBar.maxValue || 100;
+
+      if (defaultProgressBar.value > defaultProgressBar.maxValue)
+        defaultProgressBar.value = defaultProgressBar.maxValue;
     }
 
     return defaults;
@@ -210,7 +234,9 @@ class AnimatedSVGDial {
   // Extends the config object with the remaining params for the background dial
   // progressBar: object of parameters for the configuration - obj
   getBackgroundDialParams(progressBar) {
-    if (progressBar === undefined) { return new Map(); }
+    if (progressBar === undefined) {
+      return new Map();
+    }
 
     const backgroundDialParams = new Map();
     backgroundDialParams.set('cx', '50');
@@ -227,7 +253,9 @@ class AnimatedSVGDial {
   // Extends the config object with the remaining params for the foreground dial
   // progressBar: object of parameters for the configuration - obj
   getForegroundDialParams(progressBar) {
-    if (progressBar === undefined) { return new Map(); }
+    if (progressBar === undefined) {
+      return new Map();
+    }
 
     const foregroundDialParams = new Map();
     foregroundDialParams.set('class', 'circle');
@@ -246,7 +274,9 @@ class AnimatedSVGDial {
   // Extends the config object with the remaining params for the text
   // progressBar: object of parameters for the configuration - obj
   getTextParams(progressBar) {
-    if (progressBar === undefined) { return new Map(); }
+    if (progressBar === undefined) {
+      return new Map();
+    }
 
     const textParams = new Map();
     textParams.set('x', progressBar.textX || '50%');
@@ -266,7 +296,9 @@ class AnimatedSVGDial {
   // Extends the config object with the remaining params for the gradient
   // progressBar: object of parameters for the configuration - obj
   getGradientParams(progressBar) {
-    if (progressBar.gradient === undefined) { return undefined; }
+    if (progressBar.gradient === undefined) {
+      return undefined;
+    }
 
     const gradient = {
       type: progressBar.gradient.type,
@@ -278,7 +310,7 @@ class AnimatedSVGDial {
       gradient.params.set('x1', progressBar.gradient.x1 || '0%');
       gradient.params.set('y1', progressBar.gradient.y1 || '0%');
       gradient.params.set('x2', progressBar.gradient.x2 || '100%');
-      gradient.params.set('y2', progressBar.gradient.y2 || '0%');
+      gradient.params.set('y2', progressBar.gradient.y2 || '100%');
     } else {
       gradient.params.set('cx', progressBar.gradient.cx || '0%');
       gradient.params.set('cy', progressBar.gradient.cy || '0%');
@@ -290,8 +322,8 @@ class AnimatedSVGDial {
     progressBar.gradient.stops.forEach((stop) => {
       const stopParams = new Map();
       stopParams.set('offset', stop.offset || '0%');
-      stopParams.set('stop-color', stop.stopColor || '#FFFFFF');
-      stopParams.set('stop-opacity', stop.stopOpacity || '1');
+      stopParams.set('stop-color', stop.color || '#FFFFFF');
+      stopParams.set('stop-opacity', stop.opacity || '1');
       gradient.stops.push(stopParams);
     });
 

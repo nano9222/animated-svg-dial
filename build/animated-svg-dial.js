@@ -52,7 +52,8 @@ function () {
     this.parentElement.appendChild(this.svgElement); // Animation init
 
     this.initAnimationParams();
-  }
+  } // Animate all the dials
+
 
   _createClass(AnimatedSVGDial, [{
     key: "animate",
@@ -61,22 +62,27 @@ function () {
         var progressBar = this.params[i];
         this.animateSvgRadialProgressBar(i, progressBar);
       }
-    }
+    } // Resets all the dials
+
   }, {
     key: "reset",
     value: function reset() {
       for (var i = 0; i < this.params.length; i++) {
         this.resetDialParams(i);
       }
-    }
+    } // Sets the dial's animation params
+
   }, {
     key: "initAnimationParams",
     value: function initAnimationParams() {
       for (var i = 0; i < this.params.length; i++) {
         var progressBar = this.params[i];
-        this.setDialParams(i, progressBar);
+        this.setDialAnimationParams(i, progressBar);
       }
-    }
+    } // Sets the timout for the animation
+    // index: dial index - int
+    // progressBar: parameter object - object
+
   }, {
     key: "animateSvgRadialProgressBar",
     value: function animateSvgRadialProgressBar(index, progressBar) {
@@ -111,10 +117,13 @@ function () {
           textElement.textContent = progressBar.text;
         }
       }, progressBar.animationOffset);
-    }
+    } // Sets the dial's animation params
+    // index: dial index - int
+    // progressBar: parameter object - object
+
   }, {
-    key: "setDialParams",
-    value: function setDialParams(index, progressBar) {
+    key: "setDialAnimationParams",
+    value: function setDialAnimationParams(index, progressBar) {
       if (progressBar.animationDuration !== undefined && Number.isNaN(progressBar.animationDuration)) {
         return;
       }
@@ -130,7 +139,9 @@ function () {
       gauge.setAttribute('stroke-dasharray', circumference);
       gauge.setAttribute('stroke-dashoffset', circumference);
       gauge.setAttribute('style', "transition: stroke-dashoffset ".concat(transitionParams, ";"));
-    }
+    } // Resets the dial to its initial state
+    // index: dial index - int
+
   }, {
     key: "resetDialParams",
     value: function resetDialParams(index) {
@@ -147,18 +158,20 @@ function () {
           text.textContent = '';
         }
       }
-    }
+    } // Calls the methods to create the HTML structure
+
   }, {
     key: "initHtml",
     value: function initHtml() {
-      this.setSVGDefs(this.params);
-      this.setGraphicElements(this.params);
-    } // Adds to the SVG tag the element of the dial and the text
+      this.createSVGDefs(this.params);
+      this.createGraphicElements(this.params);
+    } // Adds to the SVG tag the element of the dial and the text and it attaches
+    // them to the right HTML node
     // params: array of attributes for each dial and for the text - array
 
   }, {
-    key: "setGraphicElements",
-    value: function setGraphicElements(params) {
+    key: "createGraphicElements",
+    value: function createGraphicElements(params) {
       for (var i = 0; i < params.length; i++) {
         var progressBar = params[i]; // Background circle
 
@@ -175,8 +188,8 @@ function () {
     // params: array of gradients for each dial - array
 
   }, {
-    key: "setSVGDefs",
-    value: function setSVGDefs(params) {
+    key: "createSVGDefs",
+    value: function createSVGDefs(params) {
       for (var i = 0; i < params.length; i++) {
         var progressBar = params[i]; // If there is no everything is managed by circle params
 
@@ -232,6 +245,7 @@ function () {
         defaultProgressBar.text = progressBar.text || '';
         defaultProgressBar.value = progressBar.value || 50;
         defaultProgressBar.maxValue = progressBar.maxValue || 100;
+        if (defaultProgressBar.value > defaultProgressBar.maxValue) defaultProgressBar.value = defaultProgressBar.maxValue;
       }
 
       return defaults;
@@ -318,7 +332,7 @@ function () {
         gradient.params.set('x1', progressBar.gradient.x1 || '0%');
         gradient.params.set('y1', progressBar.gradient.y1 || '0%');
         gradient.params.set('x2', progressBar.gradient.x2 || '100%');
-        gradient.params.set('y2', progressBar.gradient.y2 || '0%');
+        gradient.params.set('y2', progressBar.gradient.y2 || '100%');
       } else {
         gradient.params.set('cx', progressBar.gradient.cx || '0%');
         gradient.params.set('cy', progressBar.gradient.cy || '0%');
@@ -330,8 +344,8 @@ function () {
       progressBar.gradient.stops.forEach(function (stop) {
         var stopParams = new Map();
         stopParams.set('offset', stop.offset || '0%');
-        stopParams.set('stop-color', stop.stopColor || '#FFFFFF');
-        stopParams.set('stop-opacity', stop.stopOpacity || '1');
+        stopParams.set('stop-color', stop.color || '#FFFFFF');
+        stopParams.set('stop-opacity', stop.opacity || '1');
         gradient.stops.push(stopParams);
       });
       return gradient;
