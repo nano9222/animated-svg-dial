@@ -223,8 +223,10 @@ function () {
 
       if (this.isObject(params)) {
         paramsArray.push(params);
-      } else if (!Array.isArray(params)) {
-        return [];
+      } else if (Array.isArray(params)) {
+        paramsArray = params;
+      } else {
+        paramsArray = [{}];
       }
 
       var defaults = []; // Cycle trough every progress bar to get its attributes

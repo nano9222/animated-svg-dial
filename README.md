@@ -6,6 +6,8 @@
 
 A fully customizable, dependancy free, multi-platform javascript progress dial created using SVG tags.
 
+[Demos](https://codepen.io/collection/nvegVR/)
+
 ### Installation
 
     $ npm install animated-svg-dial
@@ -37,6 +39,8 @@ The options are:
 * **Single dial with no text**, Passing a single object or an array with length === 1.
 * **Single dial with text**, Passing a single object or an array with length === 1 and setting a value to the text parameters.
 * **Multiple dials**, Passing an array with length > 1, multiple dials **never have text** even if you value the parameters.
+
+[Demos](https://codepen.io/collection/nvegVR/)
 
 ## Configuration options
 
@@ -79,6 +83,8 @@ While the options array for more than one wheel will look lile this:
     animationOffset: 600
   }]
 ```
+
+[Demos](https://codepen.io/collection/nvegVR/)
 
 ### Options
 
@@ -241,6 +247,14 @@ animationOffset
 
 animationEasing  
 `default: ease-out`
+
+## Methods
+
+`animate()`  
+animates the dial
+
+`reset()`  
+resets the dial to the initial value
 
 ## Misc
 

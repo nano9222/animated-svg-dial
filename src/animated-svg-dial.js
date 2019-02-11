@@ -194,11 +194,13 @@ class AnimatedSVGDial {
   // Extends the passed config object with the remaining params
   // params: object or array of parameters for the configuration - array/obj
   extendParams(params) {
-    const paramsArray = [];
+    let paramsArray = [];
     if (this.isObject(params)) {
       paramsArray.push(params);
-    } else if (!Array.isArray(params)) {
-      return [];
+    } else if (Array.isArray(params)) {
+      paramsArray = params;
+    } else {
+      paramsArray = [{}];
     }
 
     const defaults = [];
